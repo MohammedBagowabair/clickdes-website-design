@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-terracotta: var(--terracotta);
+  --color-forest: var(--forest);
+  --color-saffron: var(--saffron);
+  --color-blush: var(--blush);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+:root {
+  color-scheme: light;
+  --cream: #f7f1e8;
+  --sand: #ecdfcc;
+  --ink: #1e1a16;
+  --terracotta: #b8502b;
+  --forest: #23443a;
+  --saffron: #e2a336;
+  --blush: #efc6b3;
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: #fbf7f1;
+  --card-foreground: var(--ink);
+  --popover: #fbf7f1;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--cream);
+  --secondary: var(--sand);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sand);
+  --muted-foreground: #5f554b;
+  --accent: var(--terracotta);
+  --accent-foreground: var(--cream);
+  --destructive: #a1301f;
+  --border: #ddcfbb;
+  --input: #cdbda6;
+  --ring: var(--terracotta);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+  }
+  :focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--saffron);
+    color: var(--ink);
+  }
+}
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .img-reveal {
+    clip-path: inset(12% 0 0 0);
+    transition: clip-path 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .is-visible .img-reveal,
+  .img-reveal.is-visible {
+    clip-path: inset(0 0 0 0);
+  }
+  .eyebrow {
+    @apply font-sans text-[0.7rem] font-medium uppercase tracking-[0.22em];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .img-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
