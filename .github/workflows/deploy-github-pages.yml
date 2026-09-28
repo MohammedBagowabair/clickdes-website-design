@@ -35,13 +35,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build static site
-        run: pnpm build
-        env:
-          GITHUB_PAGES: "true"
+      - name: Build static site for GitHub Pages
+        run: pnpm build:pages
 
       - name: Add SPA fallback for client routes
-        run: cp out/404.html out/404.html.bak 2>/dev/null || true; cp out/index.html out/404.html || cp out/404/index.html out/404.html
+        run: cp out/404/index.html out/404.html 2>/dev/null || cp out/index.html out/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
