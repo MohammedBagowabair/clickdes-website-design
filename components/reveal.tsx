@@ -16,18 +16,34 @@ export function Reveal({ children, as: Tag = 'div', delay = 0, className }: Reve
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
+    const show = () => el.classList.add('is-visible')
+
+    // Prefer-reduced-motion: show immediately
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      show()
+      return
+    }
+
+    // Always reveal eventually — prevents invisible sections if IO never fires
+    const fallback = window.setTimeout(show, 900 + delay)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('is-visible')
-          observer.disconnect()
-        }
+        if (!entry.isIntersecting) return
+        show()
+        observer.disconnect()
+        window.clearTimeout(fallback)
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
     )
+
     observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+    return () => {
+      observer.disconnect()
+      window.clearTimeout(fallback)
+    }
+  }, [delay])
 
   return (
     <Tag

@@ -14,41 +14,62 @@ export function PortfolioGrid({ projects }: { projects: Project[] }) {
   const visible = active === 'All' ? projects : projects.filter((p) => p.category === active)
 
   return (
-    <section aria-label="Projects" className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-40">
-      <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-2 border-b border-border pb-6">
-        {filters.map((filter) => {
-          const count = filter === 'All' ? projects.length : projects.filter((p) => p.category === filter).length
-          return (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => setActive(filter)}
-              aria-pressed={active === filter}
-              className={cn(
-                'rounded-full border px-5 py-2.5 text-sm transition-colors',
-                active === filter
-                  ? 'border-ink bg-ink text-cream'
-                  : 'border-border hover:border-ink',
-              )}
-            >
-              {filter}
-              <sup className="ml-1 text-[0.65rem] text-saffron">{count}</sup>
-            </button>
-          )
-        })}
+    <section aria-label="Projects" className="pb-16 md:pb-28">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-5 md:px-10">
+        <div
+          role="group"
+          aria-label="Filter projects"
+          className="-mx-4 flex gap-1 overflow-x-auto border-b border-border px-4 pb-4 sm:mx-0 sm:flex-wrap sm:gap-2 sm:overflow-visible sm:px-0"
+        >
+          {filters.map((filter) => {
+            const count =
+              filter === 'All' ? projects.length : projects.filter((p) => p.category === filter).length
+            return (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActive(filter)}
+                aria-pressed={active === filter}
+                className={cn(
+                  'shrink-0 px-4 py-2.5 text-sm tracking-wide transition-colors',
+                  active === filter
+                    ? 'bg-ink text-cream'
+                    : 'text-muted-foreground hover:text-ink',
+                )}
+              >
+                {filter}
+                <sup className="ml-1 text-[0.65rem] text-saffron">{count}</sup>
+              </button>
+            )
+          })}
+        </div>
+        <p className="sr-only" aria-live="polite">
+          Showing {visible.length} {active === 'All' ? '' : active.toLowerCase()} projects
+        </p>
       </div>
 
-      <p className="sr-only" aria-live="polite">
-        Showing {visible.length} {active === 'All' ? '' : active.toLowerCase()} projects
-      </p>
-
-      <ul key={active} className="mt-12 columns-1 gap-6 md:columns-2 lg:columns-3">
+      {/* Mobile: full-bleed story panels */}
+      <ul key={`m-${active}`} className="mt-6 md:hidden">
         {visible.map((project, i) => (
-          <Reveal as="li" key={project.slug} delay={(i % 3) * 100} className="mb-14 break-inside-avoid">
+          <li key={project.slug}>
+            <ProjectCard project={project} index={i} variant="panel" showDescription />
+          </li>
+        ))}
+      </ul>
+
+      {/* Desktop: open editorial columns */}
+      <ul
+        key={`d-${active}`}
+        className="mx-auto mt-14 hidden max-w-[1440px] grid-cols-3 gap-x-8 gap-y-16 px-10 md:grid"
+      >
+        {visible.map((project, i) => (
+          <Reveal as="li" key={project.slug} delay={(i % 3) * 60}>
             <ProjectCard
               project={project}
+              index={i}
               showDescription
-              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              aspect="aspect-[4/5]"
+              sizes="33vw"
             />
           </Reveal>
         ))}

@@ -7,37 +7,43 @@ import { cn } from '@/lib/utils'
 
 export function ServicesPreview() {
   return (
-    <section aria-labelledby="services-title" className="mx-auto max-w-[1440px] px-5 py-24 md:px-10 md:py-40">
-      <div className="grid gap-10 md:grid-cols-12">
+    <section
+      aria-labelledby="services-title"
+      className="mx-auto max-w-[1440px] px-4 py-16 sm:px-5 sm:py-24 md:px-10 md:py-32"
+    >
+      <div className="grid gap-10 md:grid-cols-12 md:gap-10">
         <Reveal className="md:col-span-4">
           <p className="eyebrow text-terracotta">What we offer</p>
-          <h2 id="services-title" className="mt-4 text-balance font-serif text-5xl leading-none md:text-7xl">
+          <h2
+            id="services-title"
+            className="mt-3 text-balance font-serif text-[clamp(2.25rem,8vw,4.5rem)] leading-[0.98]"
+          >
             Design with <em className="text-terracotta">purpose</em>
           </h2>
-          <p className="mt-6 max-w-sm text-pretty leading-relaxed text-muted-foreground">
+          <p className="mt-5 max-w-sm text-pretty text-base leading-relaxed text-muted-foreground">
             Three disciplines, one studio — every service is led personally from concept to completion.
           </p>
         </Reveal>
 
         <ul className="md:col-span-7 md:col-start-6">
           {services.map((service, i) => (
-            <Reveal as="li" key={service.id} delay={i * 100} className="border-t border-border last:border-b">
+            <Reveal as="li" key={service.id} delay={i * 80} className="border-t border-border last:border-b">
               <Link
                 href={`/services/#${service.id}`}
-                className="group grid grid-cols-[auto_1fr_auto] items-start gap-5 py-8 md:gap-8 md:py-10"
+                className="group grid grid-cols-[auto_1fr_auto] items-start gap-4 py-6 sm:gap-6 sm:py-8 md:py-10"
               >
                 <span
                   aria-hidden="true"
                   className={cn(
-                    'mt-1 flex size-10 items-center justify-center rounded-full text-xs transition-transform duration-500 group-hover:scale-110 md:size-12',
+                    'mt-1 flex size-9 items-center justify-center text-[0.7rem] transition-transform duration-500 group-hover:scale-105 sm:size-11',
                     accentClasses[service.accent].bg,
                     accentClasses[service.accent].text,
                   )}
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span>
-                  <span className="block font-serif text-3xl leading-tight transition-colors group-hover:text-terracotta md:text-5xl">
+                <span className="min-w-0">
+                  <span className="block font-serif text-[clamp(1.5rem,5vw,2.75rem)] leading-tight transition-colors group-hover:text-terracotta">
                     {service.title}
                   </span>
                   <span className="mt-2 block max-w-md text-sm leading-relaxed text-muted-foreground">
@@ -45,7 +51,7 @@ export function ServicesPreview() {
                   </span>
                 </span>
                 <ArrowUpRight
-                  className="mt-2 size-6 transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1"
+                  className="mt-1 size-5 shrink-0 transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 sm:mt-2 sm:size-6"
                   aria-hidden="true"
                 />
               </Link>

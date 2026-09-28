@@ -13,9 +13,15 @@ export const metadata: Metadata = {
 }
 
 const channels = [
-  { label: 'Phone', value: siteConfig.contact.phone, href: siteConfig.contact.phoneHref, dot: 'bg-terracotta' },
-  { label: 'Email', value: siteConfig.contact.email, href: siteConfig.contact.emailHref, dot: 'bg-saffron' },
-  { label: 'WhatsApp', value: siteConfig.contact.phone, href: whatsappLink(), dot: 'bg-forest', external: true },
+  { label: 'Phone', value: siteConfig.contact.phone, href: siteConfig.contact.phoneHref, accent: 'text-terracotta' },
+  { label: 'Email', value: siteConfig.contact.email, href: siteConfig.contact.emailHref, accent: 'text-saffron' },
+  {
+    label: 'WhatsApp',
+    value: siteConfig.contact.phone,
+    href: whatsappLink(),
+    accent: 'text-forest',
+    external: true,
+  },
 ]
 
 export default function ContactPage() {
@@ -31,8 +37,49 @@ export default function ContactPage() {
         lead="Tell us about your space. We reply to every enquiry within one working day."
       />
 
-      <section aria-label="Contact details and form" className="mx-auto max-w-[1440px] px-5 pb-24 md:px-10 md:pb-32">
-        <div className="grid gap-16 md:grid-cols-12 md:gap-6">
+      <section
+        aria-label="Contact details and form"
+        className="mx-auto max-w-[1440px] px-4 pb-16 sm:px-5 sm:pb-24 md:px-10 md:pb-28"
+      >
+        {/* Mobile: bold contact ribbon — no boxes */}
+        <div className="md:hidden">
+          <ul className="border-y border-ink">
+            {channels.map((c) => (
+              <li key={c.label} className="border-b border-ink/15 last:border-b-0">
+                <a
+                  href={c.href}
+                  {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="flex min-h-20 items-end justify-between gap-3 py-5"
+                >
+                  <span className="min-w-0">
+                    <span className={cnLabel(c.accent)}>{c.label}</span>
+                    <span className="mt-1 block break-words font-serif text-[clamp(1.35rem,6vw,1.85rem)] leading-tight">
+                      {c.value}
+                    </span>
+                  </span>
+                  <ArrowUpRight className="mb-1 size-5 shrink-0" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-12">
+            <h2 className="font-serif text-3xl leading-tight">
+              Start a <em className="text-forest">project</em>
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">Fields marked * are required.</p>
+            <ContactForm />
+          </div>
+
+          <address className="mt-12 not-italic text-sm leading-relaxed text-muted-foreground">
+            <p className="eyebrow text-ink/70">Studio</p>
+            <p className="mt-2 text-foreground">{siteConfig.contact.address}</p>
+            <p className="mt-1">{siteConfig.contact.hours}</p>
+          </address>
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden gap-10 md:grid md:grid-cols-12 md:gap-8">
           <div className="md:col-span-4">
             <Reveal>
               <ul className="divide-y divide-border border-y border-border">
@@ -41,67 +88,47 @@ export default function ContactPage() {
                     <a
                       href={c.href}
                       {...(c.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="group flex items-center justify-between gap-4 py-6"
+                      className="group flex min-h-16 items-center justify-between gap-3 py-5"
                     >
-                      <span>
-                        <span className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                          <span aria-hidden="true" className={`size-2 rounded-full ${c.dot}`} />
-                          {c.label}
-                        </span>
-                        <span className="mt-2 block font-serif text-2xl transition-colors group-hover:text-terracotta md:text-3xl">
+                      <span className="min-w-0">
+                        <span className={cnLabel(c.accent)}>{c.label}</span>
+                        <span className="mt-1.5 block break-words font-serif text-2xl leading-snug transition-colors group-hover:text-terracotta md:text-3xl">
                           {c.value}
                         </span>
                       </span>
-                      <ArrowUpRight className="size-5 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+                      <ArrowUpRight
+                        className="size-5 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </a>
                   </li>
                 ))}
               </ul>
             </Reveal>
-
-            <Reveal delay={100} className="mt-10 space-y-8">
+            <Reveal delay={80} className="mt-8">
               <address className="not-italic">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Studio</p>
+                <p className="text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">Studio</p>
                 <p className="mt-2 leading-relaxed">{siteConfig.contact.address}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{siteConfig.contact.hours}</p>
               </address>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Follow</p>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {siteConfig.social.map((s) => (
-                    <li key={s.label}>
-                      <a
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex rounded-full border border-border px-4 py-2 text-sm transition-colors hover:border-ink hover:bg-ink hover:text-cream"
-                      >
-                        {s.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </Reveal>
           </div>
 
-          <Reveal delay={150} className="md:col-span-7 md:col-start-6">
-            <div className="rounded-md bg-sand/70 p-6 md:p-12">
-              <h2 className="font-serif text-4xl leading-tight md:text-5xl">
-                Start a <em className="text-forest">project</em>
-              </h2>
-              <p className="mt-3 text-sm text-muted-foreground">All fields marked * are required.</p>
-              <ContactForm />
-            </div>
-          </Reveal>
+          <div className="md:col-span-7 md:col-start-6">
+            <h2 className="font-serif text-5xl leading-tight">
+              Start a <em className="text-forest">project</em>
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">All fields marked * are required.</p>
+            <ContactForm />
+          </div>
         </div>
       </section>
 
-      <section aria-labelledby="map-title" className="px-3 pb-3 md:px-5 md:pb-5">
+      <section aria-labelledby="map-title" className="md:px-5 md:pb-5">
         <h2 id="map-title" className="sr-only">
           Studio location map
         </h2>
-        <div className="overflow-hidden rounded-md bg-sand">
+        <div className="overflow-hidden bg-sand md:rounded-md">
           <iframe
             src={siteConfig.mapEmbedUrl}
             title={`Map showing ${siteConfig.name} studio in ${siteConfig.contact.address}`}
@@ -113,4 +140,8 @@ export default function ContactPage() {
       </section>
     </>
   )
+}
+
+function cnLabel(accent: string) {
+  return `text-[0.7rem] uppercase tracking-[0.18em] ${accent}`
 }
