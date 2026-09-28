@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
 import { CtaSection } from '@/components/cta-section'
+import { metadataAssetPath } from '@/lib/asset'
 import { accentClasses, getAdjacentProjects, getProject, projects } from '@/lib/projects'
 import { cn } from '@/lib/utils'
 
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${project.title} — ${project.category} Interior`,
     description: project.description,
     alternates: { canonical: `/projects/${project.slug}/` },
-    openGraph: { images: [{ url: project.coverImage.src }] },
+    openGraph: { images: [{ url: metadataAssetPath(project.coverImage.src) }] },
   }
 }
 

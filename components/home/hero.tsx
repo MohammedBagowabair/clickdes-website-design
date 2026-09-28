@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
+import { assetPath } from '@/lib/asset'
 
 export function Hero() {
   return (
@@ -9,7 +10,7 @@ export function Hero() {
       className="relative flex min-h-[100svh] flex-col overflow-hidden bg-ink text-cream"
     >
       <Image
-        src="/images/hero/hero.webp"
+        src={assetPath('/images/hero/hero.webp')}
         alt="Colourful living room with terracotta arched walls, a forest green sofa and saffron armchair"
         fill
         priority

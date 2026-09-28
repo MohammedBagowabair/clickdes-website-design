@@ -3,6 +3,7 @@ import { Inter, Instrument_Serif } from 'next/font/google'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { WhatsAppButton } from '@/components/whatsapp-button'
+import { assetPath } from '@/lib/asset'
 import { siteConfig } from '@/site.config'
 import './globals.css'
 
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
+    // Resolve against metadataBase (already includes the Pages project path)
     images: [{ url: '/images/hero/hero.webp', width: 1376, height: 768 }],
   },
   twitter: {
@@ -38,10 +40,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon-light-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: assetPath('/icon.svg'), type: 'image/svg+xml' },
+      { url: assetPath('/icon-light-32x32.png'), sizes: '32x32', type: 'image/png' },
     ],
-    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    apple: [{ url: assetPath('/apple-icon.png'), sizes: '180x180', type: 'image/png' }],
   },
 }
 

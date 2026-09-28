@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { PageIntro } from '@/components/page-intro'
 import { Reveal } from '@/components/reveal'
 import { CtaSection } from '@/components/cta-section'
+import { assetPath } from '@/lib/asset'
 import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default function StudioPage() {
           <Reveal className="md:col-span-5">
             <div className="img-reveal overflow-hidden rounded-sm bg-sand">
               <Image
-                src="/images/studio/founder.webp"
+                src={assetPath('/images/studio/founder.webp')}
                 alt="Portrait of the ClickDes founder in a sand linen blazer against a terracotta wall"
                 width={768}
                 height={1376}

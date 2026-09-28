@@ -1,4 +1,5 @@
 import data from '@/data/projects.json'
+import { withAssetPaths } from '@/lib/asset'
 
 export type Accent = 'saffron' | 'forest' | 'terracotta' | 'blush'
 
@@ -24,7 +25,15 @@ export type Project = {
   images: ProjectImage[]
 }
 
-export const projects = data as Project[]
+function normalizeProject(project: Project): Project {
+  return {
+    ...project,
+    coverImage: withAssetPaths(project.coverImage),
+    images: project.images.map(withAssetPaths),
+  }
+}
+
+export const projects = (data as Project[]).map(normalizeProject)
 
 export const featuredProjects = projects.filter((p) => p.featured)
 
@@ -39,9 +48,12 @@ export function getAdjacentProjects(slug: string) {
   return { prev, next }
 }
 
-export const accentClasses: Record<Accent, { bg: string; text: string; dot: string }> = {
-  saffron: { bg: 'bg-saffron', text: 'text-ink', dot: 'bg-saffron' },
-  forest: { bg: 'bg-forest', text: 'text-cream', dot: 'bg-forest' },
-  terracotta: { bg: 'bg-terracotta', text: 'text-cream', dot: 'bg-terracotta' },
-  blush: { bg: 'bg-blush', text: 'text-ink', dot: 'bg-blush' },
+export const accentClasses: Record<
+  Accent,
+  { bg: string; text: string; border: string }
+> = {
+  saffron: { bg: 'bg-saffron', text: 'text-saffron', border: 'border-saffron' },
+  forest: { bg: 'bg-forest', text: 'text-forest', border: 'border-forest' },
+  terracotta: { bg: 'bg-terracotta', text: 'text-terracotta', border: 'border-terracotta' },
+  blush: { bg: 'bg-blush', text: 'text-blush', border: 'border-blush' },
 }

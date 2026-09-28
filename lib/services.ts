@@ -1,4 +1,5 @@
 import type { Accent } from '@/lib/projects'
+import { withAssetPaths } from '@/lib/asset'
 
 export type Service = {
   id: string
@@ -18,12 +19,12 @@ export const services: Service[] = [
     description:
       'From a single room to a complete villa, we create homes that feel personal, generous and quietly luxurious — balancing colour, natural materials and light with the rhythms of family life.',
     accent: 'saffron',
-    image: {
+    image: withAssetPaths({
       src: '/images/projects/saffron-villa/cover.webp',
       width: 768,
       height: 1376,
       alt: 'Warm villa interior with saffron accents and lime plaster walls',
-    },
+    }),
     includes: [
       'Space planning & layouts',
       'Concept & mood development',
@@ -40,12 +41,12 @@ export const services: Service[] = [
     description:
       'We design hospitality, retail and workplace interiors that attract, welcome and endure — translating your brand into memorable spaces that work hard every day.',
     accent: 'terracotta',
-    image: {
+    image: withAssetPaths({
       src: '/images/projects/terra-cafe/cover.webp',
       width: 768,
       height: 1376,
       alt: 'Terracotta café interior with a curved green-tiled bar',
-    },
+    }),
     includes: [
       'Brand-led spatial concepts',
       'Customer journey & flow planning',
@@ -62,12 +63,12 @@ export const services: Service[] = [
     description:
       'When a space needs more than furnishing, we reshape it. We rework volumes, openings and details so the architecture and the interior speak as one.',
     accent: 'forest',
-    image: {
+    image: withAssetPaths({
       src: '/images/projects/details/detail-03.webp',
       width: 1376,
       height: 768,
       alt: 'Sequence of arched doorways washed in afternoon light',
-    },
+    }),
     includes: [
       'Measured surveys',
       'Reconfiguration & renovation plans',

@@ -1,8 +1,9 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const BASE = '/clickdes-website-design'
-const ROOT = new URL('../out/', import.meta.url)
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'out')
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true })
@@ -12,27 +13,67 @@ async function walk(dir) {
       await walk(path)
       continue
     }
-    if (!/\.(html|js|css|txt|json|xml)$/.test(entry.name)) continue
+    if (!/\.(html|js|css|txt|json|xml|map)$/.test(entry.name)) continue
     await rewrite(path)
   }
+}
+
+function prefixPath(path) {
+  if (!path.startsWith('/')) return path
+  if (path.startsWith('//')) return path
+  if (path === BASE || path.startsWith(`${BASE}/`)) return path
+  return `${BASE}${path}`
 }
 
 async function rewrite(file) {
   const original = await readFile(file, 'utf8')
   let next = original
 
-  // Prefix root-absolute asset/page URLs that Next left unprefixed.
+  // HTML attributes: src="/...", href="/..."
   next = next.replace(
-    /((?:src|href|content|poster)=["'])(\/(?!\/|clickdes-website-design)[^"']*)/g,
-    `$1${BASE}$2`,
+    /((?:src|href|content|poster|srcSet)=["'])(\/(?!\/|clickdes-website-design)[^"']*)/g,
+    (_, attr, path) => `${attr}${prefixPath(path)}`,
+  )
+
+  // CSS url(/...)
+  next = next.replace(/(url\((["']?))(\/(?!\/|clickdes-website-design)[^"')]+)(\2\))/g, (_, a, q, path, b) => {
+    return `${a}${prefixPath(path)}${b}`
+  })
+
+  // Minified JS object fields: src:"/images/..."
+  next = next.replace(
+    /(\b(?:src|href|url|image|coverImage)\s*:\s*")(\/(?!\/|clickdes-website-design)[^"]*)(")/g,
+    (_, a, path, b) => `${a}${prefixPath(path)}${b}`,
+  )
+
+  // JSON-style "src":"/..."
+  next = next.replace(
+    /("(?:src|href|url)"\s*:\s*")(\/(?!\/|clickdes-website-design)[^"]*)(")/g,
+    (_, a, path, b) => `${a}${prefixPath(path)}${b}`,
+  )
+
+  // Bare public asset string literals left in bundles
+  next = next.replace(
+    /(["'])(\/(?:images|icon|apple-icon|favicon|_next)\/(?!\/)[^"']*)\1/g,
+    (_, q, path) => `${q}${prefixPath(path)}${q}`,
+  )
+
+  // Escaped RSC sequences — only when not already base-prefixed
+  next = next.replace(
+    /(?<!\\\/clickdes-website-design)\\\/images\\\//g,
+    `\\${BASE}\\/images\\/`,
   )
   next = next.replace(
-    /(url\((["']?))(\/(?!\/|clickdes-website-design)[^"')]*\2\))/g,
-    `$1${BASE}$3`,
+    /(?<!\\\/clickdes-website-design)\\\/icon\.svg/g,
+    `\\${BASE}\\/icon.svg`,
   )
   next = next.replace(
-    /("(?:src|href|url)":")(\/(?!\/|clickdes-website-design)[^"]*)/g,
-    `$1${BASE}$2`,
+    /(?<!\\\/clickdes-website-design)\\\/icon-light/g,
+    `\\${BASE}\\/icon-light`,
+  )
+  next = next.replace(
+    /(?<!\\\/clickdes-website-design)\\\/apple-icon/g,
+    `\\${BASE}\\/apple-icon`,
   )
 
   if (next !== original) {
@@ -41,5 +82,5 @@ async function rewrite(file) {
   }
 }
 
-await walk(ROOT.pathname)
+await walk(ROOT)
 console.log('Pages path rewrite complete')

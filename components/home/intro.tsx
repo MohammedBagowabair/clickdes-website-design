@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
+import { assetPath } from '@/lib/asset'
 
 const stats = [
   { value: '10', suffix: '+', label: 'Years in design', color: 'text-terracotta' },
@@ -29,7 +30,7 @@ export function Intro() {
         <Reveal className="md:col-span-5">
           <div className="img-reveal overflow-hidden rounded-md">
             <Image
-              src="/images/studio/atelier.webp"
+              src={assetPath('/images/studio/atelier.webp')}
               alt="Material samples in terracotta, green marble, saffron and blush on the studio table"
               width={1376}
               height={768}
