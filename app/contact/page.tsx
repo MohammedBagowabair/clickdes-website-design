@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 const channels = [
   { label: 'Phone', value: siteConfig.contact.phone, href: siteConfig.contact.phoneHref, dot: 'bg-terracotta' },
-  { label: 'WhatsApp', value: 'Chat with the studio', href: whatsappLink(), dot: 'bg-forest', external: true },
+  { label: 'Email', value: siteConfig.contact.email, href: siteConfig.contact.emailHref, dot: 'bg-saffron' },
+  { label: 'WhatsApp', value: siteConfig.contact.phone, href: whatsappLink(), dot: 'bg-forest', external: true },
 ]
 
 export default function ContactPage() {

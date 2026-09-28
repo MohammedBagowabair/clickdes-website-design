@@ -38,8 +38,21 @@ export function SiteFooter() {
             <div className="col-span-2 md:col-span-1">
               <h2 className="eyebrow text-cream/60">Contact</h2>
               <ul className="mt-5 space-y-3 text-sm">
-                  <li><a className="hover:text-saffron" href={siteConfig.contact.phoneHref}>{siteConfig.contact.phone}</a></li>
-                <li><a className="hover:text-saffron" href={whatsappLink()} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                <li>
+                  <a className="hover:text-saffron" href={siteConfig.contact.phoneHref}>
+                    {siteConfig.contact.phone}
+                  </a>
+                </li>
+                <li>
+                  <a className="hover:text-saffron" href={siteConfig.contact.emailHref}>
+                    {siteConfig.contact.email}
+                  </a>
+                </li>
+                <li>
+                  <a className="hover:text-saffron" href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                    WhatsApp
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

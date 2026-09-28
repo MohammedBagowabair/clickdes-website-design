@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: https://clickdes.com/sitemap.xml
+Sitemap: https://mohammedbagowabair.github.io/clickdes-website-design/sitemap.xml

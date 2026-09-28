@@ -36,7 +36,13 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ['/images/hero/hero.webp'],
   },
-  icons: { icon: '/icon.svg' },
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-light-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
 }
 
 export const viewport: Viewport = {
@@ -51,6 +57,7 @@ const jsonLd = {
   description: siteConfig.description,
   url: siteConfig.url,
   telephone: siteConfig.contact.phone,
+  email: siteConfig.contact.email,
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Mukalla',
